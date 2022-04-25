@@ -1,8 +1,9 @@
 10. Brief Tour of the Standard Library
+
 10.1. Operating System Interface
 
-The os module provides dozens of functions for interacting with the operating system:
->>>
+Modul os menyediakan beberapa fungsi untuk berinteraksi dengan sistem operasi di bawah ini:
+
 
 >>> import os
 >>> os.getcwd()      # Return the current working directory
@@ -11,10 +12,8 @@ The os module provides dozens of functions for interacting with the operating sy
 >>> os.system('mkdir today')   # Run the command mkdir in the system shell
 0
 
-Be sure to use the import os style instead of from os import *. This will keep os.open() from shadowing the built-in open() function which operates much differently.
+Fungsi built-in dir() dan help() berguna sebagai bantuan interaktif untuk bekerja dengan modul os:
 
-The built-in dir() and help() functions are useful as interactive aids for working with large modules like os:
->>>
 
 >>> import os
 >>> dir(os)
@@ -22,8 +21,8 @@ The built-in dir() and help() functions are useful as interactive aids for worki
 >>> help(os)
 <returns an extensive manual page created from the module's docstrings>
 
-For daily file and directory management tasks, the shutil module provides a higher level interface that is easier to use:
->>>
+Untuk tugas manajemen file dan direktori harian, modul shutil digunakan:
+
 
 >>> import shutil
 >>> shutil.copyfile('data.db', 'archive.db')
@@ -33,8 +32,8 @@ For daily file and directory management tasks, the shutil module provides a high
 
 10.2. File Wildcards
 
-The glob module provides a function for making file lists from directory wildcard searches:
->>>
+Modul glob menyediakan fungsi untuk membuat daftar file dari pencarian wildcard direktori:
+
 
 >>> import glob
 >>> glob.glob('*.py')
@@ -42,39 +41,26 @@ The glob module provides a function for making file lists from directory wildcar
 
 10.3. Command Line Arguments
 
-Common utility scripts often need to process command line arguments. These arguments are stored in the sys module’s argv attribute as a list. For instance the following output results from running python demo.py one two three at the command line:
+Argumen ini disimpan dalam atribut argv modul sys sebagai daftar. Misalnya hasil keluaran berikut dari menjalankan python demo.py satu dua tiga di baris perintah berikut ini:
 >>>
 
 >>> import sys
 >>> print(sys.argv)
 ['demo.py', 'one', 'two', 'three']
 
-The argparse module provides a more sophisticated mechanism to process command line arguments. The following script extracts one or more filenames and an optional number of lines to be displayed:
-
-import argparse
-
-parser = argparse.ArgumentParser(
-    prog='top',
-    description='Show top lines from each file')
-parser.add_argument('filenames', nargs='+')
-parser.add_argument('-l', '--lines', type=int, default=10)
-args = parser.parse_args()
-print(args)
-
-When run at the command line with python top.py --lines=5 alpha.txt beta.txt, the script sets args.lines to 5 and args.filenames to ['alpha.txt', 'beta.txt'].
 10.4. Error Output Redirection and Program Termination
 
-The sys module also has attributes for stdin, stdout, and stderr. The latter is useful for emitting warnings and error messages to make them visible even when stdout has been redirected:
->>>
+Modul sys juga memiliki atribut untuk stdin, stdout, dan stderr. Yang terakhir ini berguna untuk memancarkan peringatan dan pesan kesalahan agar terlihat bahkan ketika stdout telah dialihkan.
+contoh :
+
 
 >>> sys.stderr.write('Warning, log file not found starting a new one\n')
 Warning, log file not found starting a new one
 
-The most direct way to terminate a script is to use sys.exit().
+Cara paling mudah untuk menghentikan skrip ini adalah dengan menggunakan sys.exit().
 10.5. String Pattern Matching
 
-The re module provides regular expression tools for advanced string processing. For complex matching and manipulation, regular expressions offer succinct, optimized solutions:
->>>
+Modul re menyediakan alat ekspresi reguler untuk pemrosesan string tingkat lanjut. Untuk pencocokan dan manipulasi yang kompleks, ekspresi reguler menawarkan solusi yang ringkas dan dioptimalkan:
 
 >>> import re
 >>> re.findall(r'\bf[a-z]*', 'which foot or hand fell fastest')
@@ -82,15 +68,9 @@ The re module provides regular expression tools for advanced string processing. 
 >>> re.sub(r'(\b[a-z]+) \1', r'\1', 'cat in the the hat')
 'cat in the hat'
 
-When only simple capabilities are needed, string methods are preferred because they are easier to read and debug:
->>>
-
->>> 'tea for too'.replace('too', 'two')
-'tea for two'
-
 10.6. Mathematics
 
-The math module gives access to the underlying C library functions for floating point math:
+Modul matematika memberikan akses ke fungsi pustaka C yang mendasari untuk matematika titik mengambang:
 >>>
 
 >>> import math
@@ -99,36 +79,10 @@ The math module gives access to the underlying C library functions for floating 
 >>> math.log(1024, 2)
 10.0
 
-The random module provides tools for making random selections:
->>>
 
->>> import random
->>> random.choice(['apple', 'pear', 'banana'])
-'apple'
->>> random.sample(range(100), 10)   # sampling without replacement
-[30, 83, 16, 4, 8, 81, 41, 50, 18, 33]
->>> random.random()    # random float
-0.17970987693706186
->>> random.randrange(6)    # random integer chosen from range(6)
-4
-
-The statistics module calculates basic statistical properties (the mean, median, variance, etc.) of numeric data:
->>>
-
->>> import statistics
->>> data = [2.75, 1.75, 1.25, 0.25, 0.5, 1.25, 3.5]
->>> statistics.mean(data)
-1.6071428571428572
->>> statistics.median(data)
-1.25
->>> statistics.variance(data)
-1.3720238095238095
-
-The SciPy project <https://scipy.org> has many other modules for numerical computations.
 10.7. Internet Access
 
-There are a number of modules for accessing the internet and processing internet protocols. Two of the simplest are urllib.request for retrieving data from URLs and smtplib for sending mail:
->>>
+modul untuk mengakses internet dan memproses protokol internet yang paling sederhana adalah urllib.request untuk mengambil data dari URL dan smtplib untuk mengirim email seperti di bawah ini:
 
 >>> from urllib.request import urlopen
 >>> with urlopen('http://worldtimeapi.org/api/timezone/etc/UTC.txt') as response:
@@ -149,11 +103,11 @@ datetime: 2022-01-01T01:36:47.689215+00:00
 ... """)
 >>> server.quit()
 
-(Note that the second example needs a mailserver running on localhost.)
+
 10.8. Dates and Times
 
-The datetime module supplies classes for manipulating dates and times in both simple and complex ways. While date and time arithmetic is supported, the focus of the implementation is on efficient member extraction for output formatting and manipulation. The module also supports objects that are timezone aware.
->>>
+Modul datetime menyediakan kelas untuk memanipulasi tanggal dan waktu dengan cara yang sederhana dan kompleks dan juga mendukung objek yang sadar zona waktu.
+contoh :
 
 >>> # dates are easily constructed and formatted
 >>> from datetime import date
@@ -171,8 +125,8 @@ datetime.date(2003, 12, 2)
 
 10.9. Data Compression
 
-Common data archiving and compression formats are directly supported by modules including: zlib, gzip, bz2, lzma, zipfile and tarfile.
->>>
+Pengarsipan data umum dan format kompresi secara langsung didukung oleh modul termasuk: zlib, gzip, bz2, lzma, zipfile dan tarfile.
+contoh :
 
 >>> import zlib
 >>> s = b'witch which has which witches wrist watch'
@@ -188,10 +142,8 @@ b'witch which has which witches wrist watch'
 
 10.10. Performance Measurement
 
-Some Python users develop a deep interest in knowing the relative performance of different approaches to the same problem. Python provides a measurement tool that answers those questions immediately.
-
-For example, it may be tempting to use the tuple packing and unpacking feature instead of the traditional approach to swapping arguments. The timeit module quickly demonstrates a modest performance advantage:
->>>
+Modul timeit dengan cepat menunjukkan keunggulan kinerja yang  sederhana.
+contoh :
 
 >>> from timeit import Timer
 >>> Timer('t=a; a=b; b=t', 'a=1; b=2').timeit()
@@ -199,12 +151,11 @@ For example, it may be tempting to use the tuple packing and unpacking feature i
 >>> Timer('a,b = b,a', 'a=1; b=2').timeit()
 0.54962537085770791
 
-In contrast to timeit’s fine level of granularity, the profile and pstats modules provide tools for identifying time critical sections in larger blocks of code.
+
 10.11. Quality Control
 
-One approach for developing high quality software is to write tests for each function as it is developed and to run those tests frequently during the development process.
-
-The doctest module provides a tool for scanning a module and validating tests embedded in a program’s docstrings. Test construction is as simple as cutting-and-pasting a typical call along with its results into the docstring. This improves the documentation by providing the user with an example and it allows the doctest module to make sure the code remains true to the documentation:
+Modul doctest menyediakan alat untuk memindai modul dan memvalidasi tes yang tertanam dalam docstrings program. Konstruksi pengujian sesederhana memotong dan menempelkan panggilan biasa beserta hasilnya ke dalam docstring. Ini meningkatkan dokumentasi dengan memberikan contoh kepada pengguna dan memungkinkan modul doctest untuk memastikan kode tetap sesuai dengan dokumentasi.
+contoh :
 
 def average(values):
     """Computes the arithmetic mean of a list of numbers.
@@ -217,7 +168,8 @@ def average(values):
 import doctest
 doctest.testmod()   # automatically validate the embedded tests
 
-The unittest module is not as effortless as the doctest module, but it allows a more comprehensive set of tests to be maintained in a separate file:
+Modul unittest tidak semudah modul doctest, tetapi memungkinkan serangkaian tes yang lebih komprehensif untuk dipertahankan dalam file terpisah
+contoh :
 
 import unittest
 
@@ -235,15 +187,165 @@ unittest.main()  # Calling from the command line invokes all tests
 
 10.12. Batteries Included
 
-Python has a “batteries included” philosophy. This is best seen through the sophisticated and robust capabilities of its larger packages. For example:
+Modul xmlrpc.client dan xmlrpc.server membuat penerapan panggilan prosedur jarak jauh menjadi tugas yang hampir sepele. Terlepas dari nama modul, tidak ada pengetahuan langsung atau penanganan XML yang diperlukan.
 
-    The xmlrpc.client and xmlrpc.server modules make implementing remote procedure calls into an almost trivial task. Despite the modules names, no direct knowledge or handling of XML is needed.
 
-    The email package is a library for managing email messages, including MIME and other RFC 2822-based message documents. Unlike smtplib and poplib which actually send and receive messages, the email package has a complete toolset for building or decoding complex message structures (including attachments) and for implementing internet encoding and header protocols.
+11. Brief Tour of the Standard Library — Part II
 
-    The json package provides robust support for parsing this popular data interchange format. The csv module supports direct reading and writing of files in Comma-Separated Value format, commonly supported by databases and spreadsheets. XML processing is supported by the xml.etree.ElementTree, xml.dom and xml.sax packages. Together, these modules and packages greatly simplify data interchange between Python applications and other tools.
+Modul Lanjutan ini mencakup modul yang lebih canggih yang mendukung kebutuhan pemrograman profesional. Modul ini jarang muncul dalam skrip kecil
+11.1. Output Formatting
 
-    The sqlite3 module is a wrapper for the SQLite database library, providing a persistent database that can be updated and accessed using slightly nonstandard SQL syntax.
+Modul reprlib menyediakan versi repr() yang disesuaikan untuk tampilan singkat container besar atau bersarang dalam:
+>>>
 
-    Internationalization is supported by a number of modules including gettext, locale, and the codecs package.
+>>> import reprlib
+>>> reprlib.repr(set('supercalifragilisticexpialidocious'))
+"{'a', 'c', 'd', 'e', 'f', 'g', ...}"
 
+Modul pprint menawarkan kontrol yang lebih canggih atas pencetakan objek bawaan dan objek yang ditentukan pengguna dengan cara yang dapat dibaca oleh penerjemah:
+>>>
+
+>>> import pprint
+>>> t = [[[['black', 'cyan'], 'white', ['green', 'red']], [['magenta',
+...     'yellow'], 'blue']]]
+...
+>>> pprint.pprint(t, width=30)
+[[[['black', 'cyan'],
+   'white',
+   ['green', 'red']],
+  [['magenta', 'yellow'],
+   'blue']]]
+
+Modul textwrap memformat paragraf teks agar sesuai dengan lebar layar yang diberikan:
+>>>
+
+>>> import textwrap
+>>> doc = """The wrap() method is just like fill() except that it returns
+... a list of strings instead of one big string with newlines to separate
+... the wrapped lines."""
+...
+>>> print(textwrap.fill(doc, width=40))
+Metode wrap() sama seperti fill()
+kecuali itu mengembalikan daftar string
+alih-alih satu string besar dengan baris baru
+untuk memisahkan garis yang dibungkus.
+
+11.2. Templating
+
+Modul string menyertakan kelas Template dengan sintaks yang disederhanakan yang cocok untuk diedit oleh pengguna akhir. Hal ini memungkinkan pengguna untuk menyesuaikan aplikasi mereka tanpa harus mengubah aplikasi.
+
+contoh :
+
+>>> from string import Template
+>>> t = Template('${village}folk send $$10 to $cause.')
+>>> t.substitute(village='Nottingham', cause='the ditch fund')
+'Nottinghamfolk send $10 to the ditch fund.'
+
+11.4. Multi-threading
+
+Threading adalah teknik untuk memisahkan tugas yang tidak bergantung secara berurutan. Threads dapat digunakan untuk meningkatkan daya tanggap aplikasi yang menerima masukan pengguna saat tugas lain berjalan di latar belakang. 
+
+Kode berikut menunjukkan bagaimana modul threading tingkat tinggi dapat menjalankan tugas di latar belakang sementara program utama terus berjalan:
+
+import threading, zipfile
+
+class AsyncZip(threading.Thread):
+    def __init__(self, infile, outfile):
+        threading.Thread.__init__(self)
+        self.infile = infile
+        self.outfile = outfile
+
+    def run(self):
+        f = zipfile.ZipFile(self.outfile, 'w', zipfile.ZIP_DEFLATED)
+        f.write(self.infile)
+        f.close()
+        print('Finished background zip of:', self.infile)
+
+background = AsyncZip('mydata.txt', 'myarchive.zip')
+background.start()
+print('The main program continues to run in foreground.')
+
+background.join()    # Wait for the background task to finish
+print('Main program waited until background was done.')
+
+11.5. Logging
+
+Modul logging menawarkan sistem logging berfitur lengkap dan fleksibel. Paling sederhana, pesan log dikirim ke file atau ke sys.stderr
+contoh :
+
+import logging
+logging.debug('Debugging information')
+logging.info('Informational message')
+logging.warning('Warning:config file %s not found', 'server.conf')
+logging.error('Error occurred')
+logging.critical('Critical error -- shutting down')
+
+This produces the following output:
+
+WARNING:root:Warning:config file server.conf not found
+ERROR:root:Error occurred
+CRITICAL:root:Critical error -- shutting down
+
+11.6. Weak References
+
+ Modul weakref menyediakan alat untuk melacak objek tanpa membuat referensi. 
+ contoh :
+
+
+>>> import weakref, gc
+>>> class A:
+...     def __init__(self, value):
+...         self.value = value
+...     def __repr__(self):
+...         return str(self.value)
+...
+>>> a = A(10)                   # create a reference
+>>> d = weakref.WeakValueDictionary()
+>>> d['primary'] = a            # does not create a reference
+>>> d['primary']                # fetch the object if it is still alive
+10
+>>> del a                       # remove the one reference
+>>> gc.collect()                # run garbage collection right away
+0
+>>> d['primary']                # entry was automatically removed
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+    d['primary']                # entry was automatically removed
+  File "C:/python310/lib/weakref.py", line 46, in __getitem__
+    o = self.data[key]()
+KeyError: 'primary'
+
+11.7. Tools for Working with Lists
+
+Modul array menyediakan objek array() yang seperti daftar yang hanya menyimpan sebuah data dan menyimpannya dengan lebih ringkas.
+ Contoh berikut menunjukkan larik angka yang disimpan untuk daftar reguler objek int Python:
+
+
+>>> from array import array
+>>> a = array('H', [4000, 10, 700, 22222])
+>>> sum(a)
+26932
+>>> a[1:3]
+array('H', [10, 700])
+
+11.8. Decimal Floating Point Arithmetic
+
+Modul desimal menawarkan tipe data Desimal untuk aritmatika titik mengambang desimal. Dibandingkan dengan implementasi float built-in dari floating point biner, kelas ini sangat membantu untuk
+
+    aplikasi keuangan dan penggunaan lain yang memerlukan representasi desimal yang tepat,
+
+    kontrol atas presisi,
+
+    kontrol atas pembulatan untuk memenuhi persyaratan hukum atau peraturan,
+
+    pelacakan tempat desimal yang signifikan, atau
+
+    aplikasi di mana pengguna mengharapkan hasil yang sesuai dengan perhitungan yang dilakukan dengan tangan.
+
+contoh :
+
+>>> from decimal import *
+>>> round(Decimal('0.70') * Decimal('1.05'), 2)
+Decimal('0.74')
+>>> round(.70 * 1.05, 2)
+0.73
